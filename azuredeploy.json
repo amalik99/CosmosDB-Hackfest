@@ -25,10 +25,6 @@
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
-    },
-    "_artifactsLocation": {
-      "type": "string",
-      "defaultValue": "https://mongodbnodejs.blob.core.windows.net/contosoairappextension/"
     }
   },
   "variables": {
