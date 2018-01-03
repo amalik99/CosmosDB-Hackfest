@@ -375,7 +375,7 @@
         "autoUpgradeMinorVersion": "true",
         "settings": {
           "fileUris": [
-            "https://cosmosdbhackfest.blob.core.windows.net/mongodbnodejsgui/Install_Tools.ps1"
+            "https://cosmosdb.blob.core.windows.net/installmigrationtool/Install_Tools.ps1"
           ],
           "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File Install_Tools.ps1"
         }
