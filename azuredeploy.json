@@ -25,7 +25,6 @@
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue": "PowerBIVM",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
