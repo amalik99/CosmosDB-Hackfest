@@ -336,14 +336,14 @@
             "version": "latest"
           },
           "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName')),'2016-01-01').primaryEndpoints.blob,'vhds/', parameters('powerBIVirtualMachineName'),'-','vmOSDisk','.vhd')]"
+            },
+            "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
-            {
-              "diskSizeGB": 1023,
-              "lun": 0,
-              "createOption": "Empty"
-            }
           ]
         },
         "networkProfile": {
