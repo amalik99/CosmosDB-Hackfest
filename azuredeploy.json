@@ -18,7 +18,7 @@
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "demouser",
+      "defaultValue": "Dbadmin",
       "metadata": {
         "description": "Username for the Virtual Machine."
       }
