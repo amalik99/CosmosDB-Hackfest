@@ -4,24 +4,28 @@
   "parameters": {
     "jumpVirtualMachineName": {
       "type": "string",
+      "defaultValue": "JumpVM",
       "metadata": {
         "description": "Name for the Virtual Machine."
       }
     },
     "powerBIVirtualMachineName": {
       "type": "string",
+      "defaultValue": "PowerBIVM",
       "metadata": {
         "description": "Name of PowerBI VM"
       }
     },
     "adminUsername": {
       "type": "string",
+      "defaultValue": "demouser",
       "metadata": {
         "description": "Username for the Virtual Machine."
       }
     },
     "adminPassword": {
       "type": "securestring",
+      "defaultValue": "PowerBIVM",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
