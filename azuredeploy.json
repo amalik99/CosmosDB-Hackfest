@@ -4,21 +4,18 @@
   "parameters": {
     "jumpVirtualMachineName": {
       "type": "string",
-      "defaultValue": "JumpVM",
       "metadata": {
         "description": "Name for the Virtual Machine."
       }
     },
     "powerBIVirtualMachineName": {
       "type": "string",
-      "defaultValue": "PowerBIVM",
       "metadata": {
         "description": "Name of PowerBI VM"
       }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "Dbadmin",
       "metadata": {
         "description": "Username for the Virtual Machine."
       }
@@ -49,6 +46,9 @@
       "apiVersion": "2016-01-01",
       "comments": "Storage Account",
       "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Storage Account"
+      },
       "kind": "Storage",
       "sku": {
         "name": "Standard_LRS"
@@ -60,6 +60,9 @@
       "name": "[variables('jumpPublicIPAddressName')]",
       "comments": "JUmp VM Public IP name",
       "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Jump Public IP"
+      },
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
@@ -72,6 +75,9 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('powerBIPublicIPAddressName')]",
       "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "PowerBI Public IP"
+      },
       "comments": "PowerBI VM Public IP Address",
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
@@ -87,6 +93,9 @@
       "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
       "comments": "NSG for Subnet",
+      "tags": {
+        "displayName": "Network Security Group"
+      },
       "properties": {
         "securityRules": [
           {
@@ -120,7 +129,7 @@
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "8080",
+              "destinationPortRange": "4200",
               "destinationAddressPrefix": "10.0.0.0/16",
               "sourceAddressPrefix": "Internet",
               "access": "Allow",
@@ -140,6 +149,9 @@
         "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
       ],
       "comments": "Virtual Network",
+      "tags": {
+        "displayName": "Virtual Network"
+      },
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -169,6 +181,9 @@
         "[concat('Microsoft.Network/publicIPAddresses/', variables('jumpPublicIPAddressName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
       ],
+      "tags": {
+        "displayName": "Jump Network Interface Card"
+      },
       "properties": {
         "ipConfigurations": [
           {
@@ -196,6 +211,9 @@
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
         "[concat('Microsoft.Network/publicIPAddresses/', variables('powerBIPublicIPAddressName'))]"
       ],
+      "tags": {
+        "displayName": "PowerBI Network Interface Card"
+      },
       "properties": {
         "ipConfigurations": [
           {
@@ -223,9 +241,12 @@
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('jumpNicName'))]"
       ],
+      "tags": {
+        "displayName": "Jump Virtual Machine"
+      },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D1_V2"
+          "vmSize": "Standard_D2_V2"
         },
         "osProfile": {
           "computerName": "[parameters('jumpVirtualMachineName')]",
@@ -234,26 +255,25 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "16.04.0-LTS",
-            "version": "latest"
+            "id": "/subscriptions/b23accae-e655-44e6-a08d-85fb5f1bb854/resourceGroups/cosmos-jumpimage/providers/Microsoft.Compute/images/cosmos-jumpimage"
           },
           "osDisk": {
             "createOption": "FromImage",
-            "managedDisk": {
+              "managedDisk": {
               "storageAccountType": "Standard_LRS"
             }
-          }
+          },
+          "dataDisks": [
+          ]
         },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('jumpNicName'))]"
-              }
-            ]
-          }
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('jumpNicName'))]"
+            }
+          ]
         }
+      }
     },
     {
       "apiVersion": "2015-06-15",
@@ -265,6 +285,11 @@
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('powerBINicName'))]"
       ],
+      "tags": {
+        "displayName": "PowerBI Virtual Machine",
+        "quickstartName": "[variables('quickstartTags').name]",
+        "provider": "[variables('CosmosDBTags').provider]"
+      },
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_A2_v2"
@@ -282,20 +307,22 @@
             "version": "latest"
           },
           "osDisk": {
-            "createOption": "FromImage",
+            "createOption": "fromImage",
             "managedDisk": {
               "storageAccountType": "Standard_LRS"
             }
-          }
+          },
+          "dataDisks": [
+          ]
         },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('powerBINicName'))]"
-              }
-            ]
-          }
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('powerBINicName'))]"
+            }
+          ]
         }
+      }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
