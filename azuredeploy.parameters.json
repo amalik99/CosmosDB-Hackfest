@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
        "jumpVirtualMachineName": {
-            "value": "GEN-UNIQUE-10"
+            "value": "JumpVM"
         },
        "powerBIVirtualMachineName": {
-            "value": "GEN-UNIQUE-10"
+            "value": "PowerBIVM"
         },
         "adminUsername": {
-            "value": "GEN-UNIQUE"
+            "value": "dbadmin"
         },
         "adminPassword": {
-            "value": "GEN-PASSWORD"
+            "value": "Password@123"
         }
   }
 }
